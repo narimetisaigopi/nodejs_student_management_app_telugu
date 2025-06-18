@@ -1,3 +1,4 @@
+const { required } = require('joi');
 const mongoose = require('mongoose');
 
 const studentSchema = new mongoose.Schema({
@@ -16,5 +17,6 @@ const studentSchema = new mongoose.Schema({
     isEmailVerified: { type: Boolean, default: false },
     phoneNumber: { type: String, required: true, maxlength: 10, match: [/^\d{10}$/, "Phone number must be 10 digits"], unique: true },
     isPhoneNumberVerified: { type: Boolean, default: false },
+    gender: { type:String, enum: [ 'male', 'female', 'other'] ,required: false}
 });
 module.exports = mongoose.model("Student",studentSchema);

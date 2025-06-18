@@ -2,16 +2,18 @@
 const Student = require('../models/student.model')
 const bcrypt = require('bcryptjs');
 
-const signUp = async ({ name, email, password, phoneNumber, age }) => {
+const signUp = async ({ name, email, password, phoneNumber, age, gender, username }) => {
     const existing = await Student.findOne({ email });
     if (existing) throw new Error("Email already existed");
     const hashedPassword = await bcrypt.hash(password, 10);
     const newStudent = new Student({
         name,
         email,
+        username,
         password: hashedPassword,
         phoneNumber,
-        age
+        age,
+        gender
     });
     return await newStudent.save();
 }
@@ -23,7 +25,12 @@ const login = async ({ email, password }) => {
     // if email already registered
     const isPasswordMatched = await bcrypt.compare(password, student.password);
     if (!isPasswordMatched) throw new Error("Invalid password");
-    return;
+    return student;
 }
 
-module.exports = { signUp, login }
+const getAllStudents = async () => {
+    // return await Student.find({age : 29, isPhoneNumberVerified: true});
+    return await Student.find();
+}
+
+module.exports = { signUp, login, getAllStudents }

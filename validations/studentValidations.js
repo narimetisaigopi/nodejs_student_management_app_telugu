@@ -10,7 +10,8 @@ const signUpSchema = Joi.object({
     isPhoneNumberVerified: Joi.boolean().default(false),
     phoneNumber: Joi.string().pattern(/^\d{10}$/).required().messages({
         'string.pattern.base': "Phone number must be 10 digits"
-    })
+    }),
+    gender: Joi.string().valid('male', 'female', 'other').optional()
 });
 
 module.exports = { signUpSchema };
